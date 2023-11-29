@@ -148,7 +148,7 @@
       </div>
     </div>
 
-    <div class="hidden md:block w-1/2 h-full float-right bg-[#194bfb]"><img
+    <div class="hidden md:block w-1/2 h-full float-left bg-[#194bfb]"><img
       class="h-full"
       src="@/assets/login_right_banner.jpg"
       alt="banner"

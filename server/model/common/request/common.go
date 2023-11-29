@@ -25,4 +25,14 @@ type GetAuthorityId struct {
 	AuthorityId uint `json:"authorityId" form:"authorityId"` // 角色ID
 }
 
+type SnReq struct {
+	Sn string `json:"sn" form:"sn"`
+}
+
+type ReqTLSListening struct {
+	Group   string `json:"group"`
+	Operate string `json:"operate"`
+	Content string `json:"content"`
+}
+
 type Empty struct{}

@@ -1,0 +1,23 @@
+// 自动生成模板OsInstallConfigKickstart
+package osInstall
+
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	
+	
+)
+
+// Kickstart配置 结构体  OsInstallConfigKickstart
+type OsInstallConfigKickstart struct {
+      global.GVA_MODEL
+      Name  string `json:"name" form:"name" gorm:"column:name;comment:;size:256;"`  //Name 
+      Content  string `json:"content" form:"content" gorm:"column:content;comment:PXE;size:1;"`  //Content 
+      PxeId  *int `json:"pxe_id" form:"pxe_id" gorm:"column:pxe_id;comment:PXE;size:64;"`  //PXE 
+}
+
+
+// TableName Kickstart配置 OsInstallConfigKickstart自定义表名 os_install_config_kickstart
+func (OsInstallConfigKickstart) TableName() string {
+  return "os_install_config_kickstart"
+}
+

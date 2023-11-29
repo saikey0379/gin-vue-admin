@@ -1,0 +1,27 @@
+package osManage
+
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/api/v1"
+	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
+	"github.com/gin-gonic/gin"
+)
+
+type ConfigPxeRouter struct {
+}
+
+// InitConfigPxeRouter 初始化 PXE配置 路由信息
+func (s *ConfigPxeRouter) InitConfigPxeRouter(Router *gin.RouterGroup) {
+	pxeRouter := Router.Group("pxe").Use(middleware.OperationRecord())
+	pxeRouterWithoutRecord := Router.Group("pxe")
+	var pxeApi = v1.ApiGroupApp.OsManageApiGroup.ConfigPxeApi
+	{
+		pxeRouter.POST("createConfigPxe", pxeApi.CreateConfigPxe)   // 新建PXE配置
+		pxeRouter.DELETE("deleteConfigPxe", pxeApi.DeleteConfigPxe) // 删除PXE配置
+		pxeRouter.DELETE("deleteConfigPxeByIds", pxeApi.DeleteConfigPxeByIds) // 批量删除PXE配置
+		pxeRouter.PUT("updateConfigPxe", pxeApi.UpdateConfigPxe)    // 更新PXE配置
+	}
+	{
+		pxeRouterWithoutRecord.GET("findConfigPxe", pxeApi.FindConfigPxe)        // 根据ID获取PXE配置
+		pxeRouterWithoutRecord.GET("getConfigPxeList", pxeApi.GetConfigPxeList)  // 获取PXE配置列表
+	}
+}

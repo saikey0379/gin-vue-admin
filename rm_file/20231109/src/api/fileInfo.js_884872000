@@ -1,0 +1,97 @@
+import service from '@/utils/request'
+
+// @Tags FileInfo
+// @Summary 创建文件信息
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body model.FileInfo true "创建文件信息"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
+// @Router /fileInfo/createFileInfo [post]
+export const createFileInfo = (data) => {
+  return service({
+    url: '/fileInfo/createFileInfo',
+    method: 'post',
+    data
+  })
+}
+
+// @Tags FileInfo
+// @Summary 删除文件信息
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body model.FileInfo true "删除文件信息"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
+// @Router /fileInfo/deleteFileInfo [delete]
+export const deleteFileInfo = (data) => {
+  return service({
+    url: '/fileInfo/deleteFileInfo',
+    method: 'delete',
+    data
+  })
+}
+
+// @Tags FileInfo
+// @Summary 批量删除文件信息
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.IdsReq true "批量删除文件信息"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
+// @Router /fileInfo/deleteFileInfo [delete]
+export const deleteFileInfoByIds = (data) => {
+  return service({
+    url: '/fileInfo/deleteFileInfoByIds',
+    method: 'delete',
+    data
+  })
+}
+
+// @Tags FileInfo
+// @Summary 更新文件信息
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body model.FileInfo true "更新文件信息"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router /fileInfo/updateFileInfo [put]
+export const updateFileInfo = (data) => {
+  return service({
+    url: '/fileInfo/updateFileInfo',
+    method: 'put',
+    data
+  })
+}
+
+// @Tags FileInfo
+// @Summary 用id查询文件信息
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query model.FileInfo true "用id查询文件信息"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /fileInfo/findFileInfo [get]
+export const findFileInfo = (params) => {
+  return service({
+    url: '/fileInfo/findFileInfo',
+    method: 'get',
+    params
+  })
+}
+
+// @Tags FileInfo
+// @Summary 分页获取文件信息列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query request.PageInfo true "分页获取文件信息列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /fileInfo/getFileInfoList [get]
+export const getFileInfoList = (params) => {
+  return service({
+    url: '/fileInfo/getFileInfoList',
+    method: 'get',
+    params
+  })
+}

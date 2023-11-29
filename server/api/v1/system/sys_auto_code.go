@@ -73,7 +73,12 @@ func (autoApi *AutoCodeApi) CreateTemp(c *gin.Context) {
 			apiIds = ids
 		}
 	}
+	fmt.Println(a.PackageName)
+	fmt.Println(a.Package)
+
 	a.PackageT = utils.FirstUpper(a.Package)
+	fmt.Println(a.PackageT)
+	fmt.Println("======")
 	err := autoCodeService.CreateTemp(a, apiIds...)
 	if err != nil {
 		if errors.Is(err, system.ErrAutoMove) {

@@ -1,6 +1,7 @@
 package global
 
 import (
+	"crypto/tls"
 	"sync"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/utils/timer"
@@ -27,6 +28,7 @@ var (
 	GVA_LOG                 *zap.Logger
 	GVA_Timer               timer.Timer = timer.NewTimerTask()
 	GVA_Concurrency_Control             = &singleflight.Group{}
+	GVA_AGENT_KEY           *tls.Config
 
 	BlackCache local_cache.Cache
 	lock       sync.RWMutex

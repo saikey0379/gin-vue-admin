@@ -42,7 +42,6 @@ web
  │   ├── components             -- 全局组件
  │   ├── core                   -- gva 组件包
  │   │   ├── config.js          -- gva网站配置文件
- │   │   ├── gin-vue-admin.js   -- 注册欢迎文件
  │   │   └── global.js          -- 统一导入文件
  │   ├── directive              -- v-auth 注册文件
  │   ├── main.js                -- 主文件

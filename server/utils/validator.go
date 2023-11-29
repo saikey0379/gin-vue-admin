@@ -38,6 +38,10 @@ func NotEmpty() string {
 	return "notEmpty"
 }
 
+func NotEmptyArray() string {
+	return "notEmptyArray"
+}
+
 // @author: [zooqkl](https://github.com/zooqkl)
 // @function: RegexpMatch
 // @description: 正则校验 校验输入项是否满足正则表达式
@@ -117,12 +121,13 @@ func Gt(mark string) string {
 
 func Verify(st interface{}, roleMap Rules) (err error) {
 	compareMap := map[string]bool{
-		"lt": true,
-		"le": true,
-		"eq": true,
-		"ne": true,
-		"ge": true,
-		"gt": true,
+		"lt":            true,
+		"le":            true,
+		"eq":            true,
+		"ne":            true,
+		"ge":            true,
+		"gt":            true,
+		"notEmptyArray": true,
 	}
 
 	typ := reflect.TypeOf(st)
@@ -148,6 +153,10 @@ func Verify(st interface{}, roleMap Rules) (err error) {
 				case v == "notEmpty":
 					if isBlank(val) {
 						return errors.New(tagVal.Name + "值不能为空")
+					}
+				case v == "notEmptyArray":
+					if isBlankArray(val) {
+						return errors.New(tagVal.Name + "数组不能为空")
 					}
 				case strings.Split(v, "=")[0] == "regexp":
 					if !regexpMatch(strings.Split(v, "=")[1], val.String()) {
@@ -209,6 +218,19 @@ func isBlank(value reflect.Value) bool {
 		return value.IsNil()
 	}
 	return reflect.DeepEqual(value.Interface(), reflect.Zero(value.Type()).Interface())
+}
+
+func isBlankArray(v reflect.Value) bool {
+	// 请按照你的需求调整这个函数
+	// 可以判断是否为零值，或者判断数组的长度是否为0等
+	switch v.Kind() {
+	case reflect.Slice, reflect.Map, reflect.Array:
+		return v.Len() == 0
+	case reflect.Ptr, reflect.Interface:
+		return v.IsNil()
+	default:
+		return reflect.DeepEqual(v.Interface(), reflect.Zero(v.Type()).Interface())
+	}
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)

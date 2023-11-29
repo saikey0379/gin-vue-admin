@@ -5,16 +5,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
-)
 
-// 前端传来文件片与当前片为什么文件的第几片
-// 后端拿到以后比较次分片是否上传 或者是否为不完全片
-// 前端发送每片多大
-// 前端告知是否为最后一片且是否完成
-
-const (
-	breakpointDir = "./breakpointDir/"
-	finishDir     = "./fileDir/"
+	"github.com/flipped-aurora/gin-vue-admin/server/known"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -24,7 +16,7 @@ const (
 //@return: error, string
 
 func BreakPointContinue(content []byte, fileName string, contentNumber int, contentTotal int, fileMd5 string) (string, error) {
-	path := breakpointDir + fileMd5 + "/"
+	path := known.TmpBreakPointDir + fileMd5 + "/"
 	err := os.MkdirAll(path, os.ModePerm)
 	if err != nil {
 		return path, err
@@ -78,26 +70,27 @@ func makeFileContent(content []byte, fileName string, FileDir string, contentNum
 //@param: fileName string, FileMd5 string
 //@return: error, string
 
-func MakeFile(fileName string, FileMd5 string) (string, error) {
-	rd, err := os.ReadDir(breakpointDir + FileMd5)
+func MakeFile(fileDir string, fileName string, fileMd5 string, fileMod os.FileMode) (string, error) {
+	rd, err := os.ReadDir(known.TmpBreakPointDir + fileMd5)
 	if err != nil {
-		return finishDir + fileName, err
+		return fileDir + fileName, err
 	}
-	_ = os.MkdirAll(finishDir, os.ModePerm)
-	fd, err := os.OpenFile(finishDir+fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0o644)
+
+	_ = os.MkdirAll(fileDir, os.ModePerm)
+	fd, err := os.OpenFile(fileDir+fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, fileMod)
 	if err != nil {
-		return finishDir + fileName, err
+		return fileDir + fileName, err
 	}
 	defer fd.Close()
 	for k := range rd {
-		content, _ := os.ReadFile(breakpointDir + FileMd5 + "/" + fileName + "_" + strconv.Itoa(k))
+		content, _ := os.ReadFile(known.TmpBreakPointDir + fileMd5 + "/" + fileName + "_" + strconv.Itoa(k))
 		_, err = fd.Write(content)
 		if err != nil {
-			_ = os.Remove(finishDir + fileName)
-			return finishDir + fileName, err
+			_ = os.Remove(fileDir + fileName)
+			return fileDir + fileName, err
 		}
 	}
-	return finishDir + fileName, nil
+	return fileDir + fileName, nil
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -107,6 +100,6 @@ func MakeFile(fileName string, FileMd5 string) (string, error) {
 //@return: error
 
 func RemoveChunk(FileMd5 string) error {
-	err := os.RemoveAll(breakpointDir + FileMd5)
+	err := os.RemoveAll(known.TmpBreakPointDir + FileMd5)
 	return err
 }

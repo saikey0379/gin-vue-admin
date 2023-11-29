@@ -1,5 +1,6 @@
 import { formatTimeToStr } from '@/utils/date'
 import { getDict } from '@/utils/dictionary'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export const formatBoolean = (bool) => {
   if (bool !== null) {
@@ -14,6 +15,14 @@ export const formatDate = (time) => {
     return formatTimeToStr(date, 'yyyy-MM-dd hh:mm:ss')
   } else {
     return ''
+  }
+}
+
+export const formatInfo = (cellValue) => {
+  if (cellValue === 0 ||cellValue === null || cellValue === "") {
+    return '—';
+  } else {
+    return cellValue;
   }
 }
 
@@ -50,4 +59,18 @@ export const ReturnArrImg = (arr) => {
 
 export const onDownloadFile = (url) => {
   window.open(path + url)
+}
+
+export const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text).then(function() {
+    ElMessage({
+      type: 'success',
+      message: '复制成功'
+    })
+  }, function(err) {
+    ElMessage({
+      type: 'error',
+      message: err
+    })
+  });
 }

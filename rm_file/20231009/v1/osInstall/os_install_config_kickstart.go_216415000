@@ -1,0 +1,186 @@
+package osInstall
+
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/global"
+    "github.com/flipped-aurora/gin-vue-admin/server/model/osInstall"
+    "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+    osInstallReq "github.com/flipped-aurora/gin-vue-admin/server/model/osInstall/request"
+    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+    "github.com/flipped-aurora/gin-vue-admin/server/service"
+    "github.com/gin-gonic/gin"
+    "go.uber.org/zap"
+    "github.com/flipped-aurora/gin-vue-admin/server/utils"
+)
+
+type OSInstallConfigKickstartApi struct {
+}
+
+var ksService = service.ServiceGroupApp.OsInstallServiceGroup.OSInstallConfigKickstartService
+
+
+// CreateOSInstallConfigKickstart 创建Kickstart配置
+// @Tags OSInstallConfigKickstart
+// @Summary 创建Kickstart配置
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body osInstall.OSInstallConfigKickstart true "创建Kickstart配置"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
+// @Router /ks/createOSInstallConfigKickstart [post]
+func (ksApi *OSInstallConfigKickstartApi) CreateOSInstallConfigKickstart(c *gin.Context) {
+	var ks osInstall.OSInstallConfigKickstart
+	err := c.ShouldBindJSON(&ks)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+    verify := utils.Rules{
+        "Name":{utils.NotEmpty()},
+        "Config":{utils.NotEmpty()},
+        "PxeId":{utils.NotEmpty()},
+    }
+	if err := utils.Verify(ks, verify); err != nil {
+    		response.FailWithMessage(err.Error(), c)
+    		return
+    	}
+	if err := ksService.CreateOSInstallConfigKickstart(&ks); err != nil {
+        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+	} else {
+		response.OkWithMessage("创建成功", c)
+	}
+}
+
+// DeleteOSInstallConfigKickstart 删除Kickstart配置
+// @Tags OSInstallConfigKickstart
+// @Summary 删除Kickstart配置
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body osInstall.OSInstallConfigKickstart true "删除Kickstart配置"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
+// @Router /ks/deleteOSInstallConfigKickstart [delete]
+func (ksApi *OSInstallConfigKickstartApi) DeleteOSInstallConfigKickstart(c *gin.Context) {
+	var ks osInstall.OSInstallConfigKickstart
+	err := c.ShouldBindJSON(&ks)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := ksService.DeleteOSInstallConfigKickstart(ks); err != nil {
+        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		response.FailWithMessage("删除失败", c)
+	} else {
+		response.OkWithMessage("删除成功", c)
+	}
+}
+
+// DeleteOSInstallConfigKickstartByIds 批量删除Kickstart配置
+// @Tags OSInstallConfigKickstart
+// @Summary 批量删除Kickstart配置
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.IdsReq true "批量删除Kickstart配置"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"批量删除成功"}"
+// @Router /ks/deleteOSInstallConfigKickstartByIds [delete]
+func (ksApi *OSInstallConfigKickstartApi) DeleteOSInstallConfigKickstartByIds(c *gin.Context) {
+	var IDS request.IdsReq
+    err := c.ShouldBindJSON(&IDS)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := ksService.DeleteOSInstallConfigKickstartByIds(IDS); err != nil {
+        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+		response.FailWithMessage("批量删除失败", c)
+	} else {
+		response.OkWithMessage("批量删除成功", c)
+	}
+}
+
+// UpdateOSInstallConfigKickstart 更新Kickstart配置
+// @Tags OSInstallConfigKickstart
+// @Summary 更新Kickstart配置
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body osInstall.OSInstallConfigKickstart true "更新Kickstart配置"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router /ks/updateOSInstallConfigKickstart [put]
+func (ksApi *OSInstallConfigKickstartApi) UpdateOSInstallConfigKickstart(c *gin.Context) {
+	var ks osInstall.OSInstallConfigKickstart
+	err := c.ShouldBindJSON(&ks)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+      verify := utils.Rules{
+          "Name":{utils.NotEmpty()},
+          "Config":{utils.NotEmpty()},
+          "PxeId":{utils.NotEmpty()},
+      }
+    if err := utils.Verify(ks, verify); err != nil {
+      	response.FailWithMessage(err.Error(), c)
+      	return
+     }
+	if err := ksService.UpdateOSInstallConfigKickstart(ks); err != nil {
+        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		response.FailWithMessage("更新失败", c)
+	} else {
+		response.OkWithMessage("更新成功", c)
+	}
+}
+
+// FindOSInstallConfigKickstart 用id查询Kickstart配置
+// @Tags OSInstallConfigKickstart
+// @Summary 用id查询Kickstart配置
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query osInstall.OSInstallConfigKickstart true "用id查询Kickstart配置"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /ks/findOSInstallConfigKickstart [get]
+func (ksApi *OSInstallConfigKickstartApi) FindOSInstallConfigKickstart(c *gin.Context) {
+	var ks osInstall.OSInstallConfigKickstart
+	err := c.ShouldBindQuery(&ks)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if reks, err := ksService.GetOSInstallConfigKickstart(ks.ID); err != nil {
+        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"reks": reks}, c)
+	}
+}
+
+// GetOSInstallConfigKickstartList 分页获取Kickstart配置列表
+// @Tags OSInstallConfigKickstart
+// @Summary 分页获取Kickstart配置列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query osInstallReq.OSInstallConfigKickstartSearch true "分页获取Kickstart配置列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /ks/getOSInstallConfigKickstartList [get]
+func (ksApi *OSInstallConfigKickstartApi) GetOSInstallConfigKickstartList(c *gin.Context) {
+	var pageInfo osInstallReq.OSInstallConfigKickstartSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := ksService.GetOSInstallConfigKickstartInfoList(pageInfo); err != nil {
+	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
+        response.FailWithMessage("获取失败", c)
+    } else {
+        response.OkWithDetailed(response.PageResult{
+            List:     list,
+            Total:    total,
+            Page:     pageInfo.Page,
+            PageSize: pageInfo.PageSize,
+        }, "获取成功", c)
+    }
+}

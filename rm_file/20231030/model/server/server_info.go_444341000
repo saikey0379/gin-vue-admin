@@ -1,0 +1,37 @@
+// 自动生成模板ServerInfo
+package server
+
+import (
+	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	
+	
+)
+
+// ServerInfo 结构体  ServerInfo
+type ServerInfo struct {
+      global.GVA_MODEL
+      Sn  string `json:"sn" form:"sn" gorm:"column:sn;comment:序列号;size:64;"`  //SN 
+      Hostname  string `json:"hostname" form:"hostname" gorm:"column:hostname;comment:Hostname;size:255;"`  //Hostname 
+      Ip  string `json:"ip" form:"ip" gorm:"column:ip;comment:IP;size:64;"`  //IP 
+      Manufacturer  string `json:"manufacturer" form:"manufacturer" gorm:"column:manufacturer;comment:生产商;size:256;"`  //厂商 
+      ModelName  string `json:"modelName" form:"modelName" gorm:"column:model_name;comment:型号;size:256;"`  //型号 
+      CpuSum  *int `json:"cpuSum" form:"cpuSum" gorm:"column:cpu_sum;comment:CPU核数;size:16;"`  //CPU 
+      Cpu  string `json:"cpu" form:"cpu" gorm:"column:cpu;comment:CPU信息;size:4;"`  //CPU信息 
+      MemorySum  *int `json:"memorySum" form:"memorySum" gorm:"column:memory_sum;comment:内存汇总;size:16;"`  //内存 
+      Memory  string `json:"memory" form:"memory" gorm:"column:memory;comment:内存信息;size:4;"`  //内存信息 
+      NicInfo  string `json:"nicInfo" form:"nicInfo" gorm:"column:nic_info;comment:网卡信息;size:4;"`  //网卡 
+      NicDevice  string `json:"nicDevice" form:"nicDevice" gorm:"column:nic_device;comment:NIC;size:64;"`  //NIC 
+      Gpu  string `json:"gpu" form:"gpu" gorm:"column:gpu;comment:Gpu信息;size:4;"`  //Gpu 
+      Motherboard  string `json:"motherboard" form:"motherboard" gorm:"column:motherboard;comment:主板信息;size:4096;"`  //主板 
+      Raid  string `json:"raid" form:"raid" gorm:"column:raid;comment:Raid卡信息;size:4096;"`  //Raid卡 
+      Disk  string `json:"disk" form:"disk" gorm:"column:status;comment:硬盘信息;size:4096;"`  //硬盘信息 
+      ServerType  *int `json:"serverType" form:"serverType" gorm:"column:server_type;comment:Server类型;size:8;"`  //Server类型 
+      AgentVersion  string `json:"agentVersion" form:"agentVersion" gorm:"column:agent_version;comment:Agent版本;size:64;"`  //Agent版本 
+}
+
+
+// TableName ServerInfo ServerInfo自定义表名 server_info
+func (ServerInfo) TableName() string {
+  return "server_info"
+}
+

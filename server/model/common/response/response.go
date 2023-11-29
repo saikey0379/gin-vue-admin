@@ -26,6 +26,11 @@ func Result(code int, data interface{}, msg string, c *gin.Context) {
 	})
 }
 
+func ResultContent(content []byte, c *gin.Context) {
+	// 开始时间
+	c.Data(http.StatusOK, "", content)
+}
+
 func Ok(c *gin.Context) {
 	Result(SUCCESS, map[string]interface{}{}, "操作成功", c)
 }

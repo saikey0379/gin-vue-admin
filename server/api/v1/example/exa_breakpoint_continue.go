@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"strconv"
 
+	"github.com/flipped-aurora/gin-vue-admin/server/known"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
@@ -110,7 +111,15 @@ func (b *FileUploadAndDownloadApi) FindFile(c *gin.Context) {
 func (b *FileUploadAndDownloadApi) BreakpointContinueFinish(c *gin.Context) {
 	fileMd5 := c.Query("fileMd5")
 	fileName := c.Query("fileName")
-	filePath, err := utils.MakeFile(fileName, fileMd5)
+
+	fileMod, err := utils.StringToFileMod("0644")
+	if err != nil {
+		global.GVA_LOG.Error("文件Mod解析失败!", zap.Error(err))
+		response.FailWithDetailed(exampleRes.FilePathResponse{FilePath: ""}, "文件Mod解析失败", c)
+		return
+	}
+
+	filePath, err := utils.MakeFile(known.TmpResumeTransDir, fileName, fileMd5, fileMod)
 	if err != nil {
 		global.GVA_LOG.Error("文件创建失败!", zap.Error(err))
 		response.FailWithDetailed(exampleRes.FilePathResponse{FilePath: filePath}, "文件创建失败", c)

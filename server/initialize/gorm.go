@@ -7,12 +7,20 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 
+	"github.com/flipped-aurora/gin-vue-admin/server/model/idc"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/osInstall"
+
+	"github.com/flipped-aurora/gin-vue-admin/server/model/device"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/server"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/file"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/task"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/slb"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/cmdb"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/monit"
 )
 
-// Gorm 初始化数据库并产生数据库全局变量
-// Author SliverHorn
 func Gorm() *gorm.DB {
 	switch global.GVA_CONFIG.System.DbType {
 	case "mysql":
@@ -30,12 +38,10 @@ func Gorm() *gorm.DB {
 	}
 }
 
-// RegisterTables 注册数据库表专用
-// Author SliverHorn
 func RegisterTables() {
 	db := global.GVA_DB
 	err := db.AutoMigrate(
-		// 系统模块表
+
 		system.SysApi{},
 		system.SysUser{},
 		system.SysBaseMenu{},
@@ -54,7 +60,7 @@ func RegisterTables() {
 		example.ExaFile{},
 		example.ExaCustomer{},
 		example.ExaFileChunk{},
-		example.ExaFileUploadAndDownload{},
+		example.ExaFileUploadAndDownload{}, idc.IdcInfo{}, idc.IdcCabinet{}, idc.IdcRoom{}, device.DeviceBareMetal{}, osInstall.OsInstallConfigPxe{}, osInstall.OsInstallConfigKickstart{}, idc.IdcIpSegment{}, idc.IdcIpSubnet{}, idc.IdcIpPreempt{}, osInstall.OsInstallQueue{}, osInstall.OsInstallLog{}, server.ServerDiscovery{}, server.ServerInfo{}, file.FileConfig{}, file.FileBinary{}, file.FileCommon{}, file.FileCommand{}, file.FileScript{}, file.FileCommadBlacklist{}, task.TaskParallel{}, task.TaskTimed{}, task.TaskCrontab{}, task.TaskRealtime{}, slb.SlbCluster{}, slb.SlbCert{}, slb.SlbAccesslist{}, slb.SlbUpstream{}, slb.SlbDomain{}, cmdb.CmdbIpSegment{}, cmdb.CmdbIpSubnet{}, cmdb.CmdbIpPreempt{}, cmdb.CmdbRegion{}, monit.RuleLabel{}, monit.RuleAnnotation{}, monit.RuleGroup{}, monit.PrometheusCluster{}, monit.RuleRecord{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", zap.Error(err))

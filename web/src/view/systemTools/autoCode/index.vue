@@ -386,7 +386,7 @@
                 :label="item.label"
                 :value="item.value"
                 :disabled="
-                  (row.fieldType!=='string'&&item.value==='LIKE')||
+                  ((row.fieldType!=='string' && row.fieldType!=='longtext')&&item.value==='LIKE')||
                     ((row.fieldType!=='int'&&row.fieldType!=='time.Time'&&row.fieldType!=='float64')&&(item.value==='BETWEEN' || item.value==='NOT BETWEEN'))
                 "
               />
@@ -792,6 +792,10 @@ const enterForm = async(isPreview) => {
         return false
       }
       form.value.humpPackageName = toSQLLine(form.value.packageName)
+      console.log(form.value.package)
+      console.log(form.value.packageName)
+      console.log(form.value.humpPackageName)
+
       if (isPreview) {
         const data = await preview(form.value)
         preViewCode.value = data.data.autoCode

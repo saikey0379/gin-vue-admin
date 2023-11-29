@@ -1,0 +1,241 @@
+package osInstall
+
+import (
+	"fmt"
+	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/osInstall"
+	osInstallReq "github.com/flipped-aurora/gin-vue-admin/server/model/osInstall/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+)
+
+type OsInstallQueueApi struct {
+}
+
+var osInstallQueueService = service.ServiceGroupApp.OsInstallServiceGroup.OsInstallQueueService
+
+// CreateOsInstallQueue 创建操作系统安装队列
+// @Tags OsInstallQueue
+// @Summary 创建操作系统安装队列
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body osInstall.OsInstallQueue true "创建操作系统安装队列"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
+// @Router /osInstallQueue/createOsInstallQueue [post]
+func (osInstallQueueApi *OsInstallQueueApi) CreateOsInstallQueue(c *gin.Context) {
+	var osInstallQueue osInstall.OsInstallQueue
+	err := c.ShouldBindJSON(&osInstallQueue)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	verify := utils.Rules{
+		"Sn":          {utils.NotEmpty()},
+		"Hostname":    {utils.NotEmpty()},
+		"Ip":          {utils.NotEmpty()},
+		"NetworkId":   {utils.NotEmpty()},
+		"HardwareId":  {utils.NotEmpty()},
+		"PxeId":       {utils.NotEmpty()},
+		"KickstartId": {utils.NotEmpty()},
+		"Status":      {utils.NotEmpty()},
+		"Manager":     {utils.NotEmpty()},
+	}
+	if err := utils.Verify(osInstallQueue, verify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := osInstallQueueService.CreateOsInstallQueue(&osInstallQueue); err != nil {
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		response.FailWithMessage("创建失败", c)
+	} else {
+		response.OkWithMessage("创建成功", c)
+	}
+}
+
+// DeleteOsInstallQueue 删除操作系统安装队列
+// @Tags OsInstallQueue
+// @Summary 删除操作系统安装队列
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body osInstall.OsInstallQueue true "删除操作系统安装队列"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
+// @Router /osInstallQueue/deleteOsInstallQueue [delete]
+func (osInstallQueueApi *OsInstallQueueApi) DeleteOsInstallQueue(c *gin.Context) {
+	var osInstallQueue osInstall.OsInstallQueue
+	err := c.ShouldBindJSON(&osInstallQueue)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := osInstallQueueService.DeleteOsInstallQueue(osInstallQueue); err != nil {
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		response.FailWithMessage("删除失败", c)
+	} else {
+		response.OkWithMessage("删除成功", c)
+	}
+}
+
+// DeleteOsInstallQueueByIds 批量删除操作系统安装队列
+// @Tags OsInstallQueue
+// @Summary 批量删除操作系统安装队列
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body request.IdsReq true "批量删除操作系统安装队列"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"批量删除成功"}"
+// @Router /osInstallQueue/deleteOsInstallQueueByIds [delete]
+func (osInstallQueueApi *OsInstallQueueApi) DeleteOsInstallQueueByIds(c *gin.Context) {
+	var IDS request.IdsReq
+	err := c.ShouldBindJSON(&IDS)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := osInstallQueueService.DeleteOsInstallQueueByIds(IDS); err != nil {
+		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+		response.FailWithMessage("批量删除失败", c)
+	} else {
+		response.OkWithMessage("批量删除成功", c)
+	}
+}
+
+// UpdateOsInstallQueue 更新操作系统安装队列
+// @Tags OsInstallQueue
+// @Summary 更新操作系统安装队列
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body osInstall.OsInstallQueue true "更新操作系统安装队列"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router /osInstallQueue/updateOsInstallQueue [put]
+func (osInstallQueueApi *OsInstallQueueApi) UpdateOsInstallQueue(c *gin.Context) {
+	var osInstallQueue osInstall.OsInstallQueue
+	err := c.ShouldBindJSON(&osInstallQueue)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	verify := utils.Rules{
+		"Sn":          {utils.NotEmpty()},
+		"Hostname":    {utils.NotEmpty()},
+		"Ip":          {utils.NotEmpty()},
+		"NetworkId":   {utils.NotEmpty()},
+		"HardwareId":  {utils.NotEmpty()},
+		"PxeId":       {utils.NotEmpty()},
+		"KickstartId": {utils.NotEmpty()},
+		"Status":      {utils.NotEmpty()},
+		"Manager":     {utils.NotEmpty()},
+	}
+	if err := utils.Verify(osInstallQueue, verify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := osInstallQueueService.UpdateOsInstallQueue(osInstallQueue); err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		response.FailWithMessage("更新失败", c)
+	} else {
+		response.OkWithMessage("更新成功", c)
+	}
+}
+
+// FindOsInstallQueue 用id查询操作系统安装队列
+// @Tags OsInstallQueue
+// @Summary 用id查询操作系统安装队列
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query osInstall.OsInstallQueue true "用id查询操作系统安装队列"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /osInstallQueue/findOsInstallQueue [get]
+func (osInstallQueueApi *OsInstallQueueApi) FindOsInstallQueue(c *gin.Context) {
+	var osInstallQueue osInstall.OsInstallQueue
+	err := c.ShouldBindQuery(&osInstallQueue)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if reosInstallQueue, err := osInstallQueueService.GetOsInstallQueue(osInstallQueue.ID); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(gin.H{"reosInstallQueue": reosInstallQueue}, c)
+	}
+}
+
+// GetOsInstallQueueList 分页获取操作系统安装队列列表
+// @Tags OsInstallQueue
+// @Summary 分页获取操作系统安装队列列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query osInstallReq.OsInstallQueueSearch true "分页获取操作系统安装队列列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /osInstallQueue/getOsInstallQueueList [get]
+func (osInstallQueueApi *OsInstallQueueApi) GetOsInstallQueueList(c *gin.Context) {
+	var pageInfo osInstallReq.OsInstallQueueSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := osInstallQueueService.GetOsInstallQueueInfoList(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+func (osInstallQueueApi *OsInstallQueueApi) GetDeviceInfoBySn(c *gin.Context) {
+	sn := c.Query("sn")
+	if sn != "" {
+		response.FailWithMessage("SN不能为空", c)
+		return
+	}
+
+	var osInstallQueue osInstall.OsInstallQueue
+	err := c.ShouldBindQuery(&osInstallQueue)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	device, err := osInstallQueueService.GetOsInstallQueueBySn(sn)
+	if err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	}
+
+	var deviceInfo string
+	if device.Hostname != "" {
+		deviceInfo += "HOSTNAME=\"" + device.Hostname + "\""
+	}
+	if device.Ip != "" {
+		deviceInfo += "\nIPADDR=\"" + device.Ip + "\""
+	}
+
+	ipSubnet, err := service.ServiceGroupApp.IdcServiceGroup.GetIdcIpSubnet(uint(*device.NetworkId))
+	if err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	}
+
+	if *ipSubnet.Prefix > 0 {
+		deviceInfo += fmt.Sprintf("\nPREFIX=\"%d\"", ipSubnet.Prefix)
+	}
+	if ipSubnet.Gateway != "" {
+		deviceInfo += "\nGATEWAY=\"" + ipSubnet.Gateway + "\""
+	}
+	
+	response.OkWithData(deviceInfo, c)
+}

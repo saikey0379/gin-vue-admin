@@ -29,4 +29,8 @@ type Server struct {
 
 	// 跨域配置
 	Cors CORS `mapstructure:"cors" json:"cors" yaml:"cors"`
+	// Agent
+	Agent Agent `mapstructure:"agent" json:"agent" yaml:"agent"`
+	// OsInstall
+	OsInstall OsInstall `mapstructure:"os-install" json:"os-install" yaml:"os-install"`
 }
